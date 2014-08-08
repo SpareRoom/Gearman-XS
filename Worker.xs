@@ -56,7 +56,7 @@ static void *_perl_worker_function_callback(gearman_job_st *job,
   XPUSHs(sv_2mortal(_bless("Gearman::XS::Job", job)));
   if (worker_cb->cb_arg != NULL)
   {
-    XPUSHs(sv_2mortal(newSVpv(worker_cb->cb_arg, strlen(worker_cb->cb_arg))));
+    XPUSHs(worker_cb->cb_arg);
   }
   PUTBACK;
 
@@ -210,7 +210,7 @@ add_function(self, function_name, timeout, worker_fn, context)
   CODE:
     Newxz(worker_cb, 1, gearman_worker_cb);
     worker_cb->func= newSVsv(worker_fn);
-    worker_cb->cb_arg= context;
+    worker_cb->cb_arg= newSVpvn(context, strlen(context));
     RETVAL= gearman_worker_add_function(self, function_name, timeout,
                                         _perl_worker_function_callback,
                                         (void *)worker_cb );
