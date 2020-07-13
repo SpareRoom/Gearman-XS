@@ -16,9 +16,8 @@ lib/Gearman/XS/Task.pm
 lib/Gearman/XS/Worker.pm
 Makefile.PL
 MANIFEST			This list of files
+META.json
 META.yml
-MYMETA.json
-MYMETA.yml
 ppport.h
 README
 t/00-use.t
@@ -27,6 +26,7 @@ t/03-basic.t
 t/04-live.t
 t/05-live-worker.t
 t/06_live-worker-timeout.t
+t/07_live-worker-context.t
 t/80-memleak.t
 t/99-perlcritic.t
 t/lib/TestLib.pm
