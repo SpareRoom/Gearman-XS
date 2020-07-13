@@ -1,29 +1,32 @@
 ---
 abstract: 'Perl front end for the Gearman C library.'
 author:
-  - 'Data Differential, ala Brian Aker, http://datadifferential.com/'
+  - 'Brian Aker <brian@tangent.org>'
 build_requires:
-  ExtUtils::MakeMaker: 6.59
-  Storable: 0
-  Test::More: 0
+  ExtUtils::MakeMaker: '0'
+  Storable: '0'
+  Test::More: '0'
 configure_requires:
-  ExtUtils::CBuilder: 0.27
-  ExtUtils::MakeMaker: 6.59
-distribution_type: module
+  ExtUtils::MakeMaker: '6.52'
 dynamic_config: 1
-generated_by: 'Module::Install version 1.06'
+generated_by: 'ExtUtils::MakeMaker version 7.4702, CPAN::Meta::Converter version 2.150010'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+  version: '1.4'
 name: Gearman-XS
 no_index:
   directory:
-    - examples
-    - inc
     - t
+    - inc
 requires:
-  perl: 5.6.0
+  Alien::Gearman: '0'
+  ExtUtils::CBuilder: '0'
 resources:
+  IRC: irc://irc.perl.org/#xs
+  bugtracker: https://github.com/SpareRoom/Gearman-XS/issues
+  homepage: https://metacpan.org/release/Gearman-XS
   license: http://dev.perl.org/licenses/
-version: 0.16
+  repository: https://github.com/SpareRoom/Gearman-XS.git
+version: '0.16'
+x_serialization_backend: 'CPAN::Meta::YAML version 0.018'

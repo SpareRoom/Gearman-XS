@@ -9,7 +9,7 @@
 
 use strict;
 use warnings;
-use inc::Module::Install;
+use ExtUtils::MakeMaker;
 use Env qw(GEARMAN_LIB GEARMAN_INCLUDE);
 use vars qw($INCLUDES $CCFLAGS);
 
@@ -28,30 +28,61 @@ if (defined $GEARMAN_INCLUDE) {
 
 $LIBS .= ' -lgearman';
 
-name 'Gearman-XS';
-license 'perl';
-all_from 'lib/Gearman/XS.pm';
-no_index directory => 'examples';
+if ( $^O eq 'MSWin32' ) {
+    print STDERR "Win32 is currently not supported";
+    exit(0);
+}
 
-can_xs or die "This module requires a C compiler";
-
-makemaker_args(
-    INC     => $INCLUDES,
-    LIBS    => $LIBS,
-    CCFLAGS => $CCFLAGS,
-    clean   => {
-        FILES => q{
-            MANIFEST
-            inc
-            META.yml
-            Makefile.old
-        },
+my %WriteMakefileArgs = (
+  "ABSTRACT" => "Perl front end for the Gearman C library.",
+  "AUTHOR" => "Brian Aker <brian\@tangent.org>",
+  "VERSION_FROM" => "lib/Gearman/XS.pm",
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.52",
+  },
+  "TEST_REQUIRES" => {
+    "Test::More" => "0",
+    "Storable" => "0",
+  },
+  "PREREQ_PM" => {
+    "ExtUtils::CBuilder" => "0",
+    "Alien::Gearman" => "0",
+  },
+  "DISTNAME" => "Gearman-XS",
+  "LICENSE" => "perl",
+  "NAME" => "Gearman::XS",
+  META_MERGE => {
+     resources => {
+       license     => 'http://dev.perl.org/licenses/',
+       homepage    => 'https://metacpan.org/release/Gearman-XS',
+       bugtracker  => 'https://github.com/SpareRoom/Gearman-XS/issues',
+       repository  => 'https://github.com/SpareRoom/Gearman-XS.git',
+       IRC         => 'irc://irc.perl.org/#xs'
+     },
+  },
+  XS      => { "XS.xs" => "XS.c", "Worker.xs" => "Worker.c", "Task.xs" => "Task.c", "Job.xs" => "Job.c", "Client.xs" => "Client.c", "Const.xs" => "Const.c" },
+  OBJECT => [ "XS\$(OBJ_EXT)", "Worker\$(OBJ_EXT)", "Task\$(OBJ_EXT)", "Job\$(OBJ_EXT)", "Client\$(OBJ_EXT)", "Const\$(OBJ_EXT)" ],
+  INC     => $INCLUDES,
+  LIBS    => $LIBS,
+  CCFLAGS => $CCFLAGS,
+  clean   => {
+    FILES => q{
+      Makefile.old
     },
+  },
 );
 
-cc_files map { "$_\.c" } qw/XS Const Client Worker Job Task/;
-tests 't/*.t';
+my %FallbackPrereqs = (
+    "Alien::Gearman" => "0",
+);
 
-test_requires 'Test::More';
-test_requires 'Storable';
-WriteAll;
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
+  delete $WriteMakefileArgs{TEST_REQUIRES};
+  delete $WriteMakefileArgs{BUILD_REQUIRES};
+  $WriteMakefileArgs{PREREQ_PM} = \%FallbackPrereqs;
+}
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
