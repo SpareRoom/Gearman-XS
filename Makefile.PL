@@ -9,6 +9,7 @@
 
 use strict;
 use warnings;
+use lib '.';
 use inc::Module::Install;
 use Env qw(GEARMAN_LIB GEARMAN_INCLUDE);
 use vars qw($INCLUDES $CCFLAGS);
