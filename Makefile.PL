@@ -42,9 +42,6 @@ makemaker_args(
     CCFLAGS => $CCFLAGS,
     clean   => {
         FILES => q{
-            MANIFEST
-            inc
-            META.yml
             Makefile.old
         },
     },

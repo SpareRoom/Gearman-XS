@@ -15,7 +15,7 @@
 #include "XSUB.h"
 #include "ppport.h"
 
-#include <libgearman/gearman.h>
+#include <libgearman-1.0/gearman.h>
 
 #define XS_STATE(type, x) (INT2PTR(type, SvROK(x) ? SvIV(SvRV(x)) : SvIV(x)))
 
