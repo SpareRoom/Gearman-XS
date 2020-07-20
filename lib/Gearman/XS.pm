@@ -161,7 +161,7 @@ our @EXPORT_OK = @constants;
 
 our @ISA;
 BEGIN {
-  our $VERSION= '0.16';
+  our $VERSION= '0.17';
 
   eval {
     require XSLoader;
